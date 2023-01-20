@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="Model" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+  <EntityContainer Name="ModelContainer" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="People" EntityType="Model.Person" />
+    <EntitySet Name="Shoes" EntityType="Model.Shoe" />
+    <EntitySet Name="UploadedFiles" EntityType="Model.UploadedFile" />
+    <AssociationSet Name="PersonShoe" Association="Model.PersonShoe">
+      <End Role="Person" EntitySet="People" />
+      <End Role="Shoe" EntitySet="Shoes" />
+    </AssociationSet>
+    <AssociationSet Name="ShoeUploadedFile" Association="Model.ShoeUploadedFile">
+      <End Role="Shoe" EntitySet="Shoes" />
+      <End Role="UploadedFile" EntitySet="UploadedFiles" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="Person">
+    <Key>
+      <PropertyRef Name="IDPerson" />
+    </Key>
+    <Property Name="IDPerson" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="20" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="20" />
+    <Property Name="Age" Type="Int32" Nullable="false" />
+    <Property Name="Contact" Type="String" Nullable="false" MaxLength="50" />
+    <NavigationProperty Name="Shoes" Relationship="Model.PersonShoe" FromRole="Person" ToRole="Shoe" />
+  </EntityType>
+  <EntityType Name="Shoe">
+    <Key>
+      <PropertyRef Name="IShoe" />
+    </Key>
+    <Property Name="IShoe" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="50" />
+    <Property Name="Size" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="Person" Relationship="Model.PersonShoe" FromRole="Shoe" ToRole="Person" />
+    <Property Name="IDPerson" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="UploadedFiles" Relationship="Model.ShoeUploadedFile" FromRole="Shoe" ToRole="UploadedFile" />
+  </EntityType>
+  <EntityType Name="UploadedFile">
+    <Key>
+      <PropertyRef Name="IDUploadedFile" />
+    </Key>
+    <Property Name="IDUploadedFile" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" Nullable="false" MaxLength="100" />
+    <Property Name="ContentType" Type="String" Nullable="false" MaxLength="20" />
+    <Property Name="Content" Type="Binary" Nullable="false" />
+    <NavigationProperty Name="Shoe" Relationship="Model.ShoeUploadedFile" FromRole="UploadedFile" ToRole="Shoe" />
+    <Property Name="ShoeIShoe" Type="Int32" Nullable="false" />
+  </EntityType>
+  <Association Name="PersonShoe">
+    <End Type="Model.Person" Role="Person" Multiplicity="1" />
+    <End Type="Model.Shoe" Role="Shoe" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Person">
+        <PropertyRef Name="IDPerson" />
+      </Principal>
+      <Dependent Role="Shoe">
+        <PropertyRef Name="IDPerson" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="ShoeUploadedFile">
+    <End Type="Model.Shoe" Role="Shoe" Multiplicity="1" />
+    <End Type="Model.UploadedFile" Role="UploadedFile" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Shoe">
+        <PropertyRef Name="IShoe" />
+      </Principal>
+      <Dependent Role="UploadedFile">
+        <PropertyRef Name="ShoeIShoe" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>

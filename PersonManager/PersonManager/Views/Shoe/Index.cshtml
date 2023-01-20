@@ -1,0 +1,56 @@
+﻿@model IEnumerable<PersonManager.Shoe>
+
+@{
+    ViewBag.Title = "id";
+
+}
+
+<h2>Shoe index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create", new { id = ViewBag.id })
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.IShoe)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Size)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.IDPerson)
+        </th>
+        <th>
+            
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IShoe)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Name)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Size)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.IDPerson)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.IShoe }) |
+                @Html.ActionLink("Details", "Details", new { id = item.IShoe }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.IShoe })
+            </td>
+        </tr>
+    }
+
+</table>
+<p>@Html.ActionLink("People list", "Index", "Person", new { id = 0 }, null)</p>
